@@ -204,4 +204,136 @@ module Rails
 end
 ```
 
-### 7. 
+### 7. Rack: lib/rack/server.rb
+Rack::Server 对基于 Rack 的 rails 应用提供了一组接口。
+
+```ruby
+module Rack
+  class Server
+    def initialize(options = nil)
+      @ignore_options = []
+
+      if options
+        @use_default_options = false
+        @options = options
+        @app = options[:app] if options[:app]
+      else
+        argv = defined?(SPEC_ARGV) ? SPEC_ARGV : ARGV
+        @use_default_options = true
+        @options = parse_options(argv)
+      end
+    end
+  end
+end
+
+```
+
+### 8. Rails::Server#start
+加载 config/application.rb后，调用模块 Rails中类Server的start方法：
+
+```ruby
+module Rails
+  class Server < ::Rack::Server
+    def start(after_stop_callback = nil)
+      trap(:INT) { exit }
+      create_tmp_directories
+      setup_dev_caching
+      log_to_stdout if options[:log_stdout]
+
+      super()
+      # ...
+    end
+  # ......
+```
+
+- trap(:INT) { exit }保证控制台能够捕捉中断CTRL + C信号来停止服务器；
+- create_tmp_directories生成tmp/cache、 tmp/pids 和 tmp/sockets目录；
+- setup_dev_caching允许缓存数据。
+- 最后，调用父类Rack::Server.start方法
+
+父类代码中会用到options[:config]变量，它的值由config.ru决定
+
+### 9. config.ru 和 config/environment.rb
+```ruby
+require_relative "config/environment"
+
+run Rails.application
+Rails.application.load_server
+```
+
+```ruby
+# Load the Rails application.
+require_relative "application"
+
+# Initialize the Rails application.
+Rails.application.initialize!
+```
+
+至此，rails 完成启动
+
+
+## 二、加载rails
+
+### 1. config/application
+
+`require "rails/all"` 引入 railties/lib/rails/all.rb
+
+### 2. ailties/lib/rails/all.rb
+
+负责加载rails所需的每个gem包文件
+
+```ruby
+
+require "rails"
+
+%w(
+  active_record/railtie
+  active_storage/engine
+  action_controller/railtie
+  action_view/railtie
+  action_mailer/railtie
+  active_job/railtie
+  action_cable/engine
+  action_mailbox/engine
+  action_text/engine
+  rails/test_unit/railtie
+).each do |railtie|
+  begin
+    require railtie
+  rescue LoadError
+  end
+end
+```
+
+### 3. 启动puma服务器
+
+通过`Rack::Server.run`调用如下`run`方法
+
+```ruby
+module Rack
+  module Handler
+    module Puma
+      # ...
+      def self.run(app, options = {})
+        conf   = self.config(app, options)
+
+        events = options.delete(:Silent) ? ::Puma::Events.strings : ::Puma::Events.stdio
+
+        launcher = ::Puma::Launcher.new(conf, :events => events)
+
+        yield launcher if block_given?
+        begin
+          launcher.run
+        rescue Interrupt
+          puts "* Gracefully stopping, waiting for requests to finish"
+          launcher.stop
+          puts "* Goodbye!"
+        end
+      end
+      # ...
+    end
+  end
+end
+```
+
+服务器启动成功，终端返回连接信息
