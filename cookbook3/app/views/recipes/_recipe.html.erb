@@ -4,4 +4,9 @@
     <%= recipe.title %>
   </p>
 
+  <p>
+    <strong>Categories:</strong>
+    <%= recipe.category.name if recipe.category %>
+  </p>
+
 </div>
