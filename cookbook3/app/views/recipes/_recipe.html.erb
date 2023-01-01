@@ -1,4 +1,7 @@
 <div id="<%= dom_id recipe %>">
+
+  <hr/>
+
   <p>
     <strong>Title:</strong>
     <%= recipe.title %>
@@ -7,6 +10,12 @@
   <p>
     <strong>Categories:</strong>
     <%= recipe.category.name if recipe.category %>
+    <%= link_to '<button>go to categories</button>'.html_safe, categories_url %>
+  </p>
+
+  <p>
+    <strong>Instructions:</strong>
+    <%= recipe.instructions %>
   </p>
 
 </div>
