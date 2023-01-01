@@ -1,4 +1,5 @@
 class BlogsController < ApplicationController
+  before_action :authenticate, except: [:index, :show]
   before_action :set_blog, only: %i[ show edit update destroy ]
 
   # GET /blogs or /blogs.json
@@ -66,5 +67,11 @@ class BlogsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def blog_params
       params.require(:blog).permit(:title, :content)
+    end
+
+    def authenticate
+      authenticate_or_request_with_http_basic "My custom message" do |user_name, password|
+        user_name == "xrb" && password == "123"
+      end
     end
 end
