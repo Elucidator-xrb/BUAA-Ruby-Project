@@ -71,7 +71,7 @@ class BlogsController < ApplicationController
     end
 
     def authenticate
-      redirect_to user_session_path, alert: "Must login!" unless current_user
+      redirect_to login_users_url, alert: "Must login!" unless current_user
       # authenticate_or_request_with_http_basic "My custom message" do |user_name, password|
       #   user_name == "xrb" && password == "123"
       # end
