@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  devise_for :users
+  resources :users do
+    collection do
+      get 'login'
+      post 'do_login'
+      get 'logout'
+    end
+  end
   resources :blogs do
     resources :comments
   end

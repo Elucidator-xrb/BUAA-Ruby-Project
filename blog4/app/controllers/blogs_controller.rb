@@ -1,5 +1,6 @@
 class BlogsController < ApplicationController
   before_action :authenticate, except: [:index, :show]
+  # before_action :authenticate_user!, except: [:index, :show]
   before_action :set_blog, only: %i[ show edit update destroy ]
 
   # GET /blogs or /blogs.json
@@ -70,8 +71,9 @@ class BlogsController < ApplicationController
     end
 
     def authenticate
-      authenticate_or_request_with_http_basic "My custom message" do |user_name, password|
-        user_name == "xrb" && password == "123"
-      end
+      redirect_to user_session_path, alert: "Must login!" unless current_user
+      # authenticate_or_request_with_http_basic "My custom message" do |user_name, password|
+      #   user_name == "xrb" && password == "123"
+      # end
     end
 end
