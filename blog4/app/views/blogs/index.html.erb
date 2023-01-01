@@ -1,0 +1,29 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Blogs List</h1>
+
+<div id="blogs">
+  <% @blogs.each do |blog| %>
+    <%#= render blog %>
+
+    <div>
+      <%= link_to '['+blog.title+']', blog, style:"font-size: 20px" %> | Posted 
+      <%= time_ago_in_words blog.created_at %> ago. |
+      <%= link_to 'Edit', edit_blog_path(blog) %>
+      <%= link_to 'Destroy', blog, method: :delete, data: {confirm: 'Are you sure?'} %>
+
+      <pre style="background-color: rgba(0.3, 0.3, 0.3, 0.2); width: 50%">
+        <%= blog.content %>
+      </pre>
+    </div>
+
+    <p>
+      <%= link_to "Show this blog", blog %>
+    </p>
+
+    <hr />
+
+  <% end %>
+</div>
+
+<%= link_to "New blog", new_blog_path %>

@@ -1,0 +1,16 @@
+<div id="<%= dom_id comment %>">
+  <p>
+    <strong>Blog:</strong>
+    <%= comment.blog_id %>
+  </p>
+
+  <p>
+    <strong>
+      Posted:
+      <%= time_ago_in_words(comment.created_at) %>
+    </strong>
+    <br/>
+    <%= comment.content %>
+  </p>
+
+</div>
