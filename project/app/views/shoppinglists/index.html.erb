@@ -1,0 +1,22 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Shoppinglists</h1>
+
+<div id="shoppinglists">
+  <% @shoppinglists.each do |shoppinglist| %>
+    <%#= render shoppinglist %>
+    <div class="shoppinglist-list">
+      <strong> 购物单 <%= shoppinglist.id %> </strong> | 
+      <span color="gray"> created at <%= time_ago_in_words(shoppinglist.created_at)%> ago </span> 
+      <br/>
+      <span>
+        <span style="color:green;"> <% if shoppinglist.mtype == 0 %> 添置 <% else %> 购入 <% end %> </span>
+        预计花费 <%= shoppinglist.total%> ¥
+      </span>
+      <br/>
+      <span> <%= link_to "详情", shoppinglist %> </span>
+    </div>
+  <% end %>
+</div>
+
+<%= link_to "New shoppinglist", new_shoppinglist_path %>

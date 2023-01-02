@@ -1,4 +1,4 @@
-# README
+# 设计文档
 
 This README would normally document whatever steps are necessary to get the
 application up and running.
@@ -9,6 +9,9 @@ Things you may want to cover:
 ruby3.1.2 (其实是3.1.3)
 rails 7.0.4
 
+gem包:
+- kaminari 用于翻页
+- devise  用于用户登陆注册
 
 * System dependencies
 

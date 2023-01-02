@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  mtype: 1
+  total: 1.5
+
+two:
+  mtype: 1
+  total: 1.5
