@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Project</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <div id="banner"> 
+      <h1> My Market Manage System </h1>
+    </div>
+
+    <div id="left-panel">
+      <div>
+        Left Panel <br/>
+        Avatar <br/>
+      </div>
+      
+      <div class="module-left">
+        <%= link_to "Browse Products", products_path %>
+      </div>
+
+      <div class="module-left">
+        My Shopping Cart
+      </div>
+    </div>
+
+    <div id="main-panel">
+      <%= yield %>
+    </div>
+
+    <div id="footer">
+      Copyright xrb &copy; 2023
+    <div>
+  </body>
+</html>

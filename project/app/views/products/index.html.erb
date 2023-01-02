@@ -1,0 +1,24 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Products</h1>
+
+<div id="products">
+  <% @products.each do |product| %>
+    <%#= render product %>
+    <div class="product-list">
+      <div style="vertical-align:top; float:left;">
+        <img src="<%= asset_path('goods.jpeg') %>" width="60" height="60" />
+      </div>
+      <div style="vertical-align:top;">
+        商品名：<strong> <%= product.pname %> </strong> | <%= link_to "Show this product", product %> <br/>
+        <span> 描述 <%= product.description %> </span> <br/>
+        <span> 单价 <%= product.price %> ¥ </span> | 
+        <span> 剩余 <%= product.quantity %> 个 </span>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<%= paginate @products %>
+
+<%= link_to "New product", new_product_path %>
