@@ -13,7 +13,12 @@ gem包:
 - kaminari 用于翻页
 - devise  用于用户登陆注册
 
-* System dependencies
+## 命令行创建记录
+```
+rails g scaffold product pname:string description:text price:float quantity:integer
+rails g scaffold shoppinglist mtype:integer total:float
+rails g scaffold item shoppinglist:references product:references quantity:integer
+```
 
 * Configuration
 

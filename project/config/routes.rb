@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  resources :shoppinglists
+  resources :shoppinglists do
+    resources :items
+  end
   resources :products
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

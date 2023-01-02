@@ -1,12 +1,15 @@
 <div id="<%= dom_id shoppinglist %>">
   <p>
-    <strong>Mtype:</strong>
-    <%= shoppinglist.mtype %>
+    <% if shoppinglist.mtype == 0 %>
+      <h2> 添置清单 </h2>
+    <% else %>
+      <h2> 购买清单 </h2>
+    <% end %>
   </p>
 
   <p>
     <strong>Total:</strong>
-    <%= shoppinglist.total %>
+    <%= number_with_precision(shoppinglist.total, :precision => 2, :delimeter => ',') %> ￥
   </p>
 
 </div>

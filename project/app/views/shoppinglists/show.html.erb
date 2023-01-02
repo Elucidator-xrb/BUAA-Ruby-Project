@@ -2,6 +2,29 @@
 
 <%= render @shoppinglist %>
 
+<div class="item-add">
+    <%= form_for [@shoppinglist, Item.new] do |it| %>
+      <div style="">
+        添加物品：<%= it.collection_select(:product_id, Product.all, :id, :pname) %>
+        添加数量：<%= it.number_field :quantity, :value => 0 %>
+        <%# it.text_field :shoppinglist_id, :value => @shoppinglist.id, readonly: true %>
+        <span style="width:300px;">  </span>
+        <span style=""> <%= it.submit "确认添加" %> </span>
+      </div>
+    <% end %>
+  </div>
+
+<h3> 物品列表 </h3>
+<div class="item-list"  style="margin:10px">
+
+  <%= render :partial => @shoppinglist.items %>
+
+  <% if @shoppinglist.items.size() == 0 %>
+    <span style="color:gray">空空如也，快去添加一些吧</span>
+  <% end %>
+
+</div>
+
 <div>
   <%#= link_to "Edit this shoppinglist", edit_shoppinglist_path(@shoppinglist) %>
   <%= link_to "返回", shoppinglists_path %>

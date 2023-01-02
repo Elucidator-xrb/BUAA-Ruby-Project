@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_02_114411) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_02_131241) do
+  create_table "items", force: :cascade do |t|
+    t.integer "shoppinglist_id", null: false
+    t.integer "product_id", null: false
+    t.integer "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_items_on_product_id"
+    t.index ["shoppinglist_id"], name: "index_items_on_shoppinglist_id"
+  end
+
   create_table "products", force: :cascade do |t|
     t.string "pname"
     t.text "description"
@@ -27,4 +37,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_02_114411) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "items", "products"
+  add_foreign_key "items", "shoppinglists"
 end

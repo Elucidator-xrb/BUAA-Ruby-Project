@@ -1,0 +1,19 @@
+<div id="<%= dom_id item %>" class="item-bar">
+  
+  <div>
+    <strong>商品名:</strong>
+    <%= item.product.pname %> |
+    单价： <%= number_with_precision(item.product.price, :precision => 2, :delimeter => ',') %> ￥
+  </div>
+
+  <div>
+    <span> 数量： <%= item.quantity %> </span> | 
+    <span>
+      总计： 
+      <%= number_with_precision(item.quantity*item.product.price, :precision => 2, :delimeter => ',') %>
+      ￥
+    </span>
+    <%= button_to "不买了", @shoppinglist_item, method: :delete %>
+  </div>
+
+</div>
