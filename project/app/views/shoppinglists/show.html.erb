@@ -3,19 +3,21 @@
 <%= render @shoppinglist %>
 
 <div class="item-add">
-    <%= form_for [@shoppinglist, Item.new] do |it| %>
-      <div style="">
-        添加物品：<%= it.collection_select(:product_id, Product.all, :id, :pname) %>
-        添加数量：<%= it.number_field :quantity, :value => 0 %>
-        <%# it.text_field :shoppinglist_id, :value => @shoppinglist.id, readonly: true %>
-        <span style="width:300px;">  </span>
-        <span style=""> <%= it.submit "确认添加" %> </span>
-      </div>
-    <% end %>
-  </div>
+  <%= form_for [@shoppinglist, Item.new] do |it| %>
+    <div style="">
+      添加物品：<%= it.collection_select(:product_id, Product.all, :id, :pname) %>
+      添加数量：<%= it.number_field :quantity, :value => 0 %>
+      <%# it.text_field :shoppinglist_id, :value => @shoppinglist.id, readonly: true %>
+      <span style="width:300px;">  </span>
+      <span style=""> <%= it.submit "确认添加" %> </span>
+    </div>
+  <% end %>
+</div>
 
 <h3> 物品列表 </h3>
 <div class="item-list"  style="margin:10px">
+
+  <%= button_to "提交清单", conduct_shoppinglists_url, params: {:id => @shoppinglist.id} %>
 
   <%= render :partial => @shoppinglist.items %>
 

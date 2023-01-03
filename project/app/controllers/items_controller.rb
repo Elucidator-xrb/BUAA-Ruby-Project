@@ -25,7 +25,6 @@ class ItemsController < ApplicationController
     @item = Item.new(item_params)
     @item.shoppinglist = @shoppinglist
     
-
     respond_to do |format|
       if @item.save
         @shoppinglist.total += @item.quantity * @item.product.price
@@ -57,6 +56,7 @@ class ItemsController < ApplicationController
     @shoppinglist = Shoppinglist.find(params[:shoppinglist_id])
     @shoppinglist.total -= @item.quantity * @item.product.price
     @item.destroy
+    @shoppinglist.save
 
     respond_to do |format|  # items_url -> shoppinglist_items_url -> current
       format.html { redirect_to @shoppinglist, notice: "Item was successfully destroyed." }
