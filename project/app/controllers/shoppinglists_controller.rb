@@ -1,5 +1,5 @@
 class ShoppinglistsController < ApplicationController
-  before_action :set_shoppinglist, only: %i[ show edit update destroy]
+  before_action :set_shoppinglist, only: %i[ show edit update destroy conduct]
 
   # GET /shoppinglists or /shoppinglists.json
   def index
@@ -63,9 +63,7 @@ class ShoppinglistsController < ApplicationController
 
   # POST /shoppinglists/conduct
   def conduct
-    @shoppinglist = Shoppinglist.find(params[:id])
     orient = @shoppinglist.mtype == 0 ? 1 : -1;
-    puts(orient)
     @shoppinglist.items.each do |item|
       refproduct = item.product
       refproduct.quantity += orient * item.quantity
