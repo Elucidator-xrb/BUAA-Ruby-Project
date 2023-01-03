@@ -1,5 +1,6 @@
 class ShoppinglistsController < ApplicationController
   before_action :set_shoppinglist, only: %i[ show edit update destroy conduct]
+  before_action :authenticate_manipulator!
 
   # GET /shoppinglists or /shoppinglists.json
   def index

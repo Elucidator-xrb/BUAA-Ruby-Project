@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_02_131241) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_03_143832) do
   create_table "items", force: :cascade do |t|
     t.integer "shoppinglist_id", null: false
     t.integer "product_id", null: false
@@ -19,6 +19,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_02_131241) do
     t.datetime "updated_at", null: false
     t.index ["product_id"], name: "index_items_on_product_id"
     t.index ["shoppinglist_id"], name: "index_items_on_shoppinglist_id"
+  end
+
+  create_table "manipulators", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "mname", default: "", null: false
+    t.integer "mtype", default: 1, null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_manipulators_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_manipulators_on_reset_password_token", unique: true
   end
 
   create_table "products", force: :cascade do |t|

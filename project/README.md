@@ -20,6 +20,9 @@ rails g scaffold shoppinglist mtype:integer total:float
 rails g scaffold item shoppinglist:references product:references quantity:integer
 
 rails g devise:install
+rails g devise manipulator
+rails g devise:views manipulators
+rails g devise:controllers manipulators
 ```
 
 ## 功能实现

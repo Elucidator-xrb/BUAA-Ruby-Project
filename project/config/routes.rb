@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :manipulators
   resources :shoppinglists do
     resources :items
     collection do
