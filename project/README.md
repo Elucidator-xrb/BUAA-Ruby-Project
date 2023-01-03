@@ -18,6 +18,8 @@ gem包:
 rails g scaffold product pname:string description:text price:float quantity:integer
 rails g scaffold shoppinglist mtype:integer total:float
 rails g scaffold item shoppinglist:references product:references quantity:integer
+
+rails g devise:install
 ```
 
 ## 功能实现
