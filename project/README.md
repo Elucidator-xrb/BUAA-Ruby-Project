@@ -69,6 +69,13 @@ end
 
 ### 添加数据约束
 
+### 添加图片
+获取图片路径的helpper,`<%= asset_path('goods.jpeg') %>`，`asset_path`
+
+```erb
+<img src="<%= asset_path('goods.jpeg') %>" width="60" height="60" />
+```
+
 * Configuration
 
 * Database creation

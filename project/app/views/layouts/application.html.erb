@@ -11,6 +11,9 @@
   </head>
 
   <body>
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
+
     <div id="banner"> 
       <h1> My Market Manage System </h1>
     </div>
@@ -19,6 +22,10 @@
       <div>
         Left Panel <br/>
         Avatar <br/>
+      </div>
+
+      <div class="module-left">
+        <%= link_to "Home", home_index_path %>
       </div>
       
       <div class="module-left">
