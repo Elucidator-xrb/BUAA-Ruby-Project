@@ -14,26 +14,37 @@
  *= require_self
  */
 
-
+ #banner {
+  margin: 0px;
+  margin-left: -5px;
+  margin-right: -5px;
+  margin-top: -10px;
+  padding: 5px;
+  border-style: solid;
+  border-width: 2px;
+  background-color: rgba(110, 112, 112, 0.336);
+ }
 
  #left-panel {
   float: left;
   margin: 15px;
-  width: 200px;
+  width: 10%;
+  min-width: 200px;
   height: 90%;
  }
 
  #main-panel {
   float: left;
-  border-left: 1px solid;
+  border-left: 2px solid;
   padding: 10px;
-  width: 75%;
+  width: 85%;
   height: 90%;
   min-height: 650px;
  }
 
  #footer {
-  clear: both
+  clear: both;
+  text-align: center;
  }
 
  .module-left {
