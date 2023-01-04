@@ -1,12 +1,7 @@
 # 设计文档
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
 ## 项目依赖
-ruby3.1.2 (其实是3.1.3)
+ruby 3.1.2 (其实是3.1.3，为了git-ci将其改回3.1.2；以及本人的rvm好像只能装到ruby3.0，所以ruby是用apt装的，然后11月多由于软件更新升级成3.1.3了，版本回退不会弄，鼓捣半天不行，感觉得卸了重装，麻烦就不管了)
 rails 7.0.4
 
 gem包:
@@ -14,6 +9,7 @@ gem包:
 - devise  用于用户登陆注册
 
 ## 命令行创建记录
+> 个人记录用
 ```
 rails g scaffold product pname:string description:text price:float quantity:integer
 rails g scaffold shoppinglist mtype:integer total:float
@@ -27,7 +23,23 @@ rails g devise:controllers manipulators
 rails g migration AddManipulatorToShoppinglists manipulator:references
 ```
 
-## 功能实现
+## 功能概述
+### 用户系统
+- 权限划分：管理员/顾客；
+- 基本注册和登录（用的devise），基本的非空检验
+- 提供顾客升级管理员的接口，需要验证码
+
+### 顾客
+- 浏览商品
+- 生成购物清单购买商品，其他基本的非空非负检验
+- 购物清单查看/增添物体/删除物品/提交（商品不足则无法提交清单）
+
+### 管理员
+- 创建/修改/删除商品，基本的非空非负检验
+- 生成添置清单增补商品，其他基本的非空非负检验
+- 添置清单查看/增添物体/删除物品/提交（商品不足则无法提交清单）
+
+## 功能实现描述
 ### 添加products产品
 对“顾客”身份用户，关闭相关编辑功能：
 - 不显示链接
@@ -164,6 +176,13 @@ shoppinglist的创建会根据用户类型而不同，但一开始没有可选�
 ```ruby
 Shoppinglist.where(:manipulator_id => current_manipulator.id)
 ```
+
+### 成为管理员
+由于需求防止顾客用户注册为管理员，所以干脆不设接口，注册后统一成为“顾客”身份账户；
+
+之后本期望与devise给一个所有用户的index和update方法，不过好像没有；于是干脆固定一个验证码，`home_controller`中建一个post的`authorize`方法，接受表单数据（验证码）；若输入验证码正确会将权限自动转为“管理员”。（不是很聪明的样子，不过有些不知道其他处理方式）
+
+测试用，验证码是`114514`
 
 
 

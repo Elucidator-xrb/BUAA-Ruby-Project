@@ -1,33 +1,33 @@
-<h2>Sign up</h2>
+<h2>注册成为顾客</h2>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), data: {turbo: false}) do |f| %>
   <%= render "manipulators/shared/error_messages", resource: resource %>
 
   <div class="field">
-    <%= f.label :mname %><br />
+    <%= f.label "账户名" %><br />
     <%= f.text_field :mname, autofocus: true, autocomplete: "yourname" %>
   </div>
 
   <div class="field">
-    <%= f.label :email %><br />
+    <%= f.label "邮箱" %><br />
     <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
   </div>
 
   <div class="field">
-    <%= f.label :password %>
+    <%= f.label "口令" %>
     <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
+    <em>(最少 <%= @minimum_password_length %> 个字母)</em>
     <% end %><br />
     <%= f.password_field :password, autocomplete: "new-password" %>
   </div>
 
   <div class="field">
-    <%= f.label :password_confirmation %><br />
+    <%= f.label "重复口令" %><br />
     <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
   </div>
 
   <div class="actions">
-    <%= f.submit "Sign up" %>
+    <%= f.submit "注册" %>
   </div>
 <% end %>
 

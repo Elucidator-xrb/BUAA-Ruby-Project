@@ -9,6 +9,16 @@
 
 <div class="placeholder-stripe"></div>
 
-<div style="text-align:right;">
-  <img src="<%= asset_path('closure.jpg') %>" height="540" />
+<% if current_manipulator.mtype != 0 %>
+  <div style="float:left;">
+    <%= form_with url: home_index_path do %>
+      <p> 输入验证码，成为管理员 </p>
+      <%= password_field_tag :verification_code %>
+      <%= submit_tag "验证" %>
+    <% end %>
+  </div>
+<% end %>
+
+<div style="float:right; text-align:right;">
+  <img src="<%= asset_path('closure.jpg') %>" height="510" />
 </div>

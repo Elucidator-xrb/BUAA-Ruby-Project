@@ -20,7 +20,7 @@
         您好, <br/>
         <% if manipulator_signed_in? %>
           <strong> &emsp; <%= current_manipulator.mname %>! </strong> <br/>
-          用户类型：<% if current_manipulator.mtype == 0 %> 管理员 <% else %> <strong>顾客</strong> <% end %>
+          用户类型：<strong> <% if current_manipulator.mtype == 0 %> 管理员 <% else %> 顾客 <% end %> </strong>
         <% else %>
           请先 <%= link_to "登陆", manipulator_session_path %>
         <% end %>
