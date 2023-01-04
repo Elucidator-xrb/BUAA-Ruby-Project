@@ -4,7 +4,7 @@ class ShoppinglistsController < ApplicationController
 
   # GET /shoppinglists or /shoppinglists.json
   def index
-    @shoppinglists = Shoppinglist.page(params[:page]).per(5)
+    @shoppinglists = Shoppinglist.where(:manipulator_id => current_manipulator.id).page(params[:page]).per(5)
   end
 
   # GET /shoppinglists/1 or /shoppinglists/1.json
@@ -15,6 +15,7 @@ class ShoppinglistsController < ApplicationController
   def new
     @shoppinglist = Shoppinglist.new
     @shoppinglist.mtype = current_manipulator.mtype
+    @shoppinglist.manipulator = current_manipulator
     @shoppinglist.total = 0.0
     @shoppinglist.save
     redirect_to shoppinglist_url(@shoppinglist)
@@ -65,14 +66,28 @@ class ShoppinglistsController < ApplicationController
   # POST /shoppinglists/conduct
   def conduct
     orient = @shoppinglist.mtype == 0 ? 1 : -1;
-    @shoppinglist.items.each do |item|
-      refproduct = item.product
-      refproduct.quantity += orient * item.quantity
-      refproduct.save
+    islegal = true
+    if @shoppinglist.mtype == 1 
+      @shoppinglist.items.each do |item|
+        if item.product.quantity < item.quantity
+          islegal = false
+          respond_to do |format|
+            format.html { redirect_to @shoppinglist, notice: "商品量不足，无法执行购买操作" }
+            format.json { head :no_content }
+          end
+          break
+        end
+      end
     end
-    @shoppinglist.destroy
-
-    redirect_to shoppinglists_url
+    if islegal
+      @shoppinglist.items.each do |item|
+        refproduct = item.product
+        refproduct.quantity += orient * item.quantity
+        refproduct.save
+      end
+      @shoppinglist.destroy
+      redirect_to shoppinglists_url
+    end
   end
 
   private

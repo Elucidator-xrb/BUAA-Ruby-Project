@@ -32,7 +32,7 @@
 <%= paginate @shoppinglists %>
 
 <% if current_manipulator.mtype == 0 %>
-  <%= button_to "添置", new_shoppinglist_path, method: :get %>
+  <%= button_to "新增添置", new_shoppinglist_path, method: :get %>
 <% else %>
-  <%= button_to "购买", new_shoppinglist_path, method: :get %>
+  <%= button_to "新增购买", new_shoppinglist_path, method: :get %>
 <% end %>

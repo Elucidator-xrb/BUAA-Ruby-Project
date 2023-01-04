@@ -23,6 +23,8 @@ rails g devise:install
 rails g devise manipulator
 rails g devise:views manipulators
 rails g devise:controllers manipulators
+
+rails g migration AddManipulatorToShoppinglists manipulator:references
 ```
 
 ## 功能实现
@@ -47,6 +49,18 @@ view中
 
 这也是convention中，删除某个事物会用`button_to`配上`method: :delete`；其他都用`link_to`
 
+controller中的new操作被直接钉死，没有可选的操作；根据当前用户状况而变化
+```ruby
+  def new
+    @shoppinglist = Shoppinglist.new
+    @shoppinglist.mtype = current_manipulator.mtype
+    @shoppinglist.manipulator = current_manipulator
+    @shoppinglist.total = 0.0
+    @shoppinglist.save
+    redirect_to shoppinglist_url(@shoppinglist)
+  end
+```
+
 
 ### 添加items物品
 路由嵌套
@@ -56,22 +70,61 @@ view中
   end
 ```
 
+修改`items_controller`中的`create`、`destroy`方法，使得添加items时可以合并同类项
+```ruby
+  @item = Item.where(:shoppinglist_id => @shoppinglist.id, :product_id => item_params[:product_id]).first
+  if @item == nil 
+    @item = Item.new(item_params)
+    @item.shoppinglist = @shoppinglist
+  else 
+    @item.quantity += item_params[:quantity].to_i
+  end
+```
+使得对应shoppinglist的total随之改变
+```ruby
+@shoppinglist = Shoppinglist.find(params[:shoppinglist_id])
+
+@shoppinglist.total -= @item.quantity * @item.product.price
+@shoppinglist.total += @item.quantity * @item.product.price
+
+@shoppinglist.save  # 修改shoppinglist的total数
+```
+
 ### 提交清单
 在shoppinglists_controller中，添加自定义action为`conduct`。（事先将conduct也加到`before_action :set_shoppinglist`中了，这样就可以获取`@shoppinglist`）
-```ruby
-# POST /shoppinglists/conduct
-def conduct
-  orient = @shoppinglist.mtype == 0 ? 1 : -1;
-  @shoppinglist.items.each do |item|
-    refproduct = item.product
-    refproduct.quantity += orient * item.quantity
-    refproduct.save
-  end
-  @shoppinglist.destroy
 
-  redirect_to shoppinglists_url
-end
+当类型为购买时，事先计算商品数量是否充足，若不足则弹出提示（虽然用的是成功的绿色，但不太会设置），终止提交操作；
+```ruby
+  # POST /shoppinglists/conduct
+  def conduct
+    orient = @shoppinglist.mtype == 0 ? 1 : -1;
+    islegal = true
+    # 预计算， 如果商品不够，就不进行无法进行操作
+    if @shoppinglist.mtype == 1 
+      @shoppinglist.items.each do |item|
+        if item.product.quantity < item.quantity
+        # 由于已经事先将item合并同类项了，所以上述判断条件不会有误
+          islegal = false
+          respond_to do |format|
+            format.html { redirect_to @shoppinglist, notice: "商品量不足，无法执行购买操作" }
+            format.json { head :no_content }
+          end
+          break
+        end
+      end
+    end
+    if islegal
+      @shoppinglist.items.each do |item|
+        refproduct = item.product
+        refproduct.quantity += orient * item.quantity
+        refproduct.save
+      end
+      @shoppinglist.destroy
+      redirect_to shoppinglists_url
+    end
+  end
 ```
+
 
 在shoppinglists路由中添加`collections ...`,变为
 ```ruby
@@ -89,6 +142,11 @@ end
 ```
 
 ### 添加数据约束
+product创建时各字段非空；price字段大于等于0；quantity被限制必定为0不能修改
+
+shoppinglist的创建会根据用户类型而不同，但一开始没有可选项；其内的item添加时，quantity字段被限制必须大于等于0，否则无法提交
+
+提交shoppinglist时会进行商品量的判断，购买后不会出现商品量为负的情况，具体见上。
 
 ### 添加图片
 获取图片路径的helpper,`<%= asset_path('goods.jpeg') %>`，`asset_path`
@@ -100,9 +158,12 @@ end
 ### 添加用户系统
 由于devise使用的是`ujs`，而rails7默认采用`turbo`，所以要手动将`turbo`禁掉
 
-使用devise的注册功能，在`form_for`中加入`data: {turbo: false}`，才能正常使用其注册功能。
+使用devise的注册功能，在`form_for`中加入`data: {turbo: false}`，才能正常使用其注册功能。登出时同样需要，`<%= link_to "登出", destroy_manipulator_session_path, data: {turbo_method: :delete} %>`，（这里反而是得使用turbo_method，有点搞不懂了），否则不会发delete请求而是变成了get 
 
-登出时同样需要，`<%= link_to "登出", destroy_manipulator_session_path, data: {turbo_method: :delete} %>`，（这里反而是得使用turbo_method，有点搞不懂了），否则不会发delete请求而是变成了get 
+为了区分显示不同用户产生的shoppinglist，先将manipulator作为references加入shoppinglist的模型中；然后对controller中index操作进行修改，对Shoppinglist进行筛选
+```ruby
+Shoppinglist.where(:manipulator_id => current_manipulator.id)
+```
 
 
 

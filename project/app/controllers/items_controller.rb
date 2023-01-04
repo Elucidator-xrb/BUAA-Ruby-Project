@@ -22,8 +22,14 @@ class ItemsController < ApplicationController
   # POST /items or /items.json
   def create
     @shoppinglist = Shoppinglist.find(params[:shoppinglist_id])
-    @item = Item.new(item_params)
-    @item.shoppinglist = @shoppinglist
+
+    @item = Item.where(:shoppinglist_id => @shoppinglist.id, :product_id => item_params[:product_id]).first
+    if @item == nil 
+      @item = Item.new(item_params)
+      @item.shoppinglist = @shoppinglist
+    else 
+      @item.quantity += item_params[:quantity].to_i
+    end
     
     respond_to do |format|
       if @item.save

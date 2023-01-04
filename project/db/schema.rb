@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_03_143832) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_04_101501) do
   create_table "items", force: :cascade do |t|
     t.integer "shoppinglist_id", null: false
     t.integer "product_id", null: false
@@ -49,8 +49,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_03_143832) do
     t.float "total"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "manipulator_id", null: false
+    t.index ["manipulator_id"], name: "index_shoppinglists_on_manipulator_id"
   end
 
   add_foreign_key "items", "products"
   add_foreign_key "items", "shoppinglists"
+  add_foreign_key "shoppinglists", "manipulators"
 end
