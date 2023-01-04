@@ -1,9 +1,11 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Shoppinglists</h1>
+  <h1>我的购物单</h1>
 
 <div id="shoppinglists">
+
   <% @shoppinglists.each do |shoppinglist| %>
+  
     <%#= render shoppinglist %>
     <div class="shoppinglist-list">
       <strong> 购物单 <%= shoppinglist.id %> </strong> | 
@@ -16,9 +18,21 @@
       <br/>
       <span> <%= link_to "详情", shoppinglist %> </span>
     </div>
+
   <% end %>
+
+  <% if @shoppinglists.size() == 0 %>
+    <div class="shoppinglist-list">
+      空空如也，快去添加一些吧
+    </div>
+  <% end %>
+
 </div>
 
 <%= paginate @shoppinglists %>
 
-<%= link_to "New shoppinglist", new_shoppinglist_path %>
+<% if current_manipulator.mtype == 0 %>
+  <%= button_to "添置", new_shoppinglist_path, method: :get %>
+<% else %>
+  <%= button_to "购买", new_shoppinglist_path, method: :get %>
+<% end %>

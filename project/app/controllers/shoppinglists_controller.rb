@@ -14,7 +14,7 @@ class ShoppinglistsController < ApplicationController
   # GET /shoppinglists/new
   def new
     @shoppinglist = Shoppinglist.new
-    @shoppinglist.mtype = 0
+    @shoppinglist.mtype = current_manipulator.mtype
     @shoppinglist.total = 0.0
     @shoppinglist.save
     redirect_to shoppinglist_url(@shoppinglist)

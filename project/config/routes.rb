@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  devise_for :manipulators
+  devise_for :manipulators, controllers: {
+    sessions: 'manipulators/sessions',
+    registrations: 'manipulators/registrations'
+  }
   resources :shoppinglists do
     resources :items
     collection do

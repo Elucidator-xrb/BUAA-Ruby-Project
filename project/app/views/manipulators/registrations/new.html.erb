@@ -1,7 +1,12 @@
 <h2>Sign up</h2>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), data: {turbo: false}) do |f| %>
   <%= render "manipulators/shared/error_messages", resource: resource %>
+
+  <div class="field">
+    <%= f.label :mname %><br />
+    <%= f.text_field :mname, autofocus: true, autocomplete: "yourname" %>
+  </div>
 
   <div class="field">
     <%= f.label :email %><br />

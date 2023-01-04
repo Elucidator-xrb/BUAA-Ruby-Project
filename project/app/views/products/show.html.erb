@@ -3,8 +3,10 @@
 <%= render @product %>
 
 <div>
-  <%= link_to "Edit this product", edit_product_path(@product) %> |
-  <%= link_to "Back to products", products_path %>
+  <% if current_manipulator.mtype == 0 %>
+    <%= button_to "商品下架", @product, method: :delete %>
 
-  <%= button_to "Destroy this product", @product, method: :delete %>
+    <%= link_to "编辑商品信息", edit_product_path(@product) %> |
+  <% end %>
+  <%= link_to "返回", products_path %>
 </div>
