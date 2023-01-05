@@ -27,7 +27,7 @@ rails g migration AddManipulatorToShoppinglists manipulator:references
 ### 用户系统
 - 权限划分：管理员/顾客；
 - 基本注册和登录（用的devise），基本的非空检验
-- 提供顾客升级管理员的接口，需要验证码
+- 提供顾客升级管理员的接口，需要验证码（测试用：114514，具体见下）
 
 ### 顾客
 - 浏览商品
@@ -183,19 +183,3 @@ Shoppinglist.where(:manipulator_id => current_manipulator.id)
 之后本期望与devise给一个所有用户的index和update方法，不过好像没有；于是干脆固定一个验证码，`home_controller`中建一个post的`authorize`方法，接受表单数据（验证码）；若输入验证码正确会将权限自动转为“管理员”。（不是很聪明的样子，不过有些不知道其他处理方式）
 
 测试用，验证码是`114514`
-
-
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
