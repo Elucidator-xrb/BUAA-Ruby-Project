@@ -13,7 +13,7 @@
       <br/>
       <span>
         <span style="color:green;"> <% if shoppinglist.mtype == 0 %> 添置 <% else %> 购买 <% end %> </span>
-        预计花费 <%= shoppinglist.total%> ¥
+        预计花费 <%= number_with_precision(shoppinglist.total, :precision => 2, :delimeter => ',') %> ¥
       </span>
       <br/>
       <span> <%= link_to "详情", shoppinglist %> </span>
