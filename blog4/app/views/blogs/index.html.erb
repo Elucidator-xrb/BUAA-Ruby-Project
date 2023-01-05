@@ -8,11 +8,16 @@
 
     <div>
       <%= link_to '['+blog.title+']', blog, style:"font-size: 20px" %> | Posted 
-      <%= time_ago_in_words blog.created_at %> ago. |
-      <%= link_to 'Edit', edit_blog_path(blog) %>
-      <%= link_to 'Destroy', blog, method: :delete, data: {confirm: 'Are you sure?'} %>
+      <%= time_ago_in_words blog.created_at %> ago | 
+      created by <strong> <%= blog.user.username %> </strong>
+      <% if current_user and blog.user == current_user %>|
+        <%= link_to 'Edit', edit_blog_path(blog) %>
+        <%= link_to 'Destroy', blog, data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'} %>
+      <% else %>
+        <span>&emsp; &emsp; &emsp;</span>
+      <% end %>
 
-      <pre style="background-color: rgba(0.3, 0.3, 0.3, 0.2); width: 100%">
+      <pre style="background-color: rgba(0.3, 0.3, 0.3, 0.2); width: 100%; padding: 10px;">
         <%= blog.content %>
       </pre>
     </div>
@@ -26,4 +31,8 @@
   <% end %>
 </div>
 
-<%= link_to "New blog", new_blog_path %>
+<% if current_user %>
+  <%= link_to "New blog", new_blog_path %>
+<% else %>
+  <p> 登录后才能写blog </p>
+<% end %>

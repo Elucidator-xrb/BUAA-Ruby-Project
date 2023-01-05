@@ -5,11 +5,14 @@
 <%= render @blog %>
 
 <div>
-  <%= link_to "Edit", edit_blog_path(@blog) %> |
-  <%= link_to "Destroy", @blog, :confirm => 'Are you sure?', method: :delete %>
-  <br />
+  <% if current_user and @blog.user == current_user %>
+    <%= link_to "Edit", edit_blog_path(@blog) %> |
+    <%= link_to "Destroy", @blog, data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'} %>
+    <br />
+  <% end %>
   <%= link_to "See All Blogs Post", blogs_path %>
 </div>
+
 
 <h2>Comments</h2>
 
@@ -17,12 +20,18 @@
   <%= render :partial => @blog.comments %>
 </div>
 
-<%= form_for [@blog, Comment.new] do |newC|%>
+<% if current_user %>
+  <%= form_for [@blog, Comment.new] do |newC|%>
+    <p>
+      <%= newC.label :content, "New Comment" %> <br/>
+      <%= newC.text_area :content, :rows => 5 %>
+    </p>
+    <p>
+      <%= newC.submit "Add Comment" %>
+    </p>
+  <% end %>
+<% else %>
   <p>
-    <%= newC.label :content, "New Comment" %> <br/>
-    <%= newC.text_area :content, :rows => 5 %>
-  </p>
-  <p>
-    <%= newC.submit "Add Comment" %>
+    登录后才能评论
   </p>
 <% end %>

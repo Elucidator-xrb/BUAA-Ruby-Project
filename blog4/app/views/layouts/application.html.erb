@@ -22,7 +22,8 @@
         <%= current_user.email %> <br/>
         <%= link_to 'Logout', logout_users_path %>
       <% else %>
-        Please <%= link_to 'Login', login_users_path %>   <%# former: login_users_path%>
+        Please <%= link_to 'Login', login_users_path %>   <%# former: login_users_path%> <br/>
+        <%= link_to 'Register', new_user_path %>        
       <% end %>
     </div>
 

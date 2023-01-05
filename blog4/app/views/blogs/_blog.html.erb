@@ -5,8 +5,16 @@
   </p>
 
   <p>
-    <strong>Content:</strong>
-    <%= blog.content %>
+    <strong>Created by:</strong>
+    <%= blog.user.username %>
+  </p>
+
+
+  <p>
+    <strong>Content:</strong> <br/>
+    <p style="min-height: 100px; background-color: rgba(0.3, 0.3, 0.3, 0.3); padding: 10px;">
+      <%= blog.content %>
+    </p>
   </p>
 
 </div>

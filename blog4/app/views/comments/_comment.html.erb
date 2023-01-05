@@ -3,7 +3,9 @@
   <p>
     <strong>
       Posted:
-      <%= time_ago_in_words(comment.created_at) %>
+      <%= time_ago_in_words(comment.created_at) %> |
+      Commented by:
+      <%= comment.user.username %>
     </strong>
     <br/>
     <%= comment.content %>
